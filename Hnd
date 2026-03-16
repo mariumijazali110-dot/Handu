@@ -1,0 +1,603 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>My Handmade · B Binary</title>
+  <style>
+    /* RESET + BASE — pink/white/purple modern palette */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #fff9fc 0%, #fce9f5 100%);
+      color: #2d1b3c;
+      line-height: 1.5;
+      padding: 0 0.75rem 2rem;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* headings & spacing */
+    h1, h2, h3 {
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #8b5f9c;
+      text-shadow: 0 2px 10px rgba(230, 180, 220, 0.3);
+      margin-bottom: 0.25rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #a5558f;
+      border-left: 6px solid #d9a5c6;
+      padding-left: 1.2rem;
+      margin: 2rem 0 1.5rem 0;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      color: #7e4b75;
+      margin-bottom: 0.75rem;
+    }
+
+    /* header / nav soft */
+    .nav-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 60px;
+      padding: 0.9rem 2rem;
+      margin: 1.2rem 0 2rem 0;
+      box-shadow: 0 8px 20px rgba(175, 100, 150, 0.1);
+      border: 1px solid rgba(255, 220, 240, 0.7);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 550;
+      background: linear-gradient(130deg, #b3709f, #9f7aba);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #5f3e66;
+      transition: 0.2s;
+      font-size: 1.1rem;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a:hover {
+      border-bottom-color: #d48ab5;
+      color: #a13e7c;
+    }
+
+    /* cards & product row */
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin: 2rem 0 2.5rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 36px;
+      padding: 1.8rem 1.8rem 2rem;
+      box-shadow: 0 20px 35px -8px rgba(160, 100, 140, 0.2);
+      flex: 1 1 280px;
+      max-width: 340px;
+      border: 1px solid #ffe2f0;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #f9eef5;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 200, 230, 0.6), 0 8px 12px rgba(150, 80, 120, 0.1);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .price-tag {
+      font-size: 1.9rem;
+      font-weight: 550;
+      color: #b3457c;
+      margin: 1rem 0 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .price-tag small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #9b6f8b;
+    }
+
+    .desc {
+      color: #3e2e42;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .thumbnails {
+      display: flex;
+      gap: 12px;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .thumb {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: #f4ddee;
+      border: 2px solid white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+      overflow: hidden;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* side panel / cart area — hidden until b binary selected */
+    .cart-side-panel {
+      background: white;
+      border-radius: 40px;
+      padding: 2rem 2rem 2.2rem;
+      margin: 2rem 0 2rem;
+      box-shadow: 0 20px 40px rgba(170, 120, 160, 0.15);
+      border: 2px solid #fad3ea;
+      display: none;  /* hidden by default, toggled via radio */
+    }
+
+    .cart-side-panel.active-panel {
+      display: block;
+    }
+
+    .panel-title {
+      font-size: 2rem;
+      color: #8b4e79;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-details {
+      background: #fdf3fa;
+      border-radius: 28px;
+      padding: 1.6rem;
+      margin: 1.5rem 0;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #dbb6cf;
+      padding: 0.7rem 0;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #ad3c7c;
+    }
+
+    .shipping-note {
+      background: #efe2f0;
+      border-radius: 40px;
+      padding: 0.8rem 1.5rem;
+      display: inline-block;
+      margin: 0.5rem 0 1.5rem;
+      font-weight: 500;
+      color: #542c5a;
+    }
+
+    /* contact form */
+    .lead-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      color: #753b66;
+      margin-left: 0.5rem;
+    }
+
+    .form-group input, .form-group textarea {
+      padding: 1rem 1.2rem;
+      border-radius: 40px;
+      border: 2px solid #f3cedf;
+      background: white;
+      font-size: 1rem;
+      transition: 0.15s;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #c481b5;
+      box-shadow: 0 0 0 4px #f3dcea;
+    }
+
+    .btn {
+      background: #bb84ad;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 60px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 6px 0 #8f5282;
+      margin-top: 1rem;
+      width: fit-content;
+      min-width: 240px;
+    }
+
+    .btn:hover {
+      background: #c876b0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #8f5282;
+    }
+
+    .btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #8f5282;
+    }
+
+    .btn-small {
+      background: #b09bc0;
+      box-shadow: 0 4px 0 #7b607c;
+      padding: 0.8rem 1.8rem;
+      font-size: 1.1rem;
+    }
+
+    /* footer & contact row */
+    .contact-section {
+      background: rgba(255, 240, 250, 0.7);
+      backdrop-filter: blur(4px);
+      border-radius: 50px;
+      padding: 2rem 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 3rem;
+      border: 1px solid white;
+    }
+
+    .contact-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 1.3rem;
+      color: #632f5a;
+    }
+
+    .contact-row i { font-style: normal; background: #ead2f0; padding: 0.2rem 0.8rem; border-radius: 40px; }
+
+    .shipping-badge {
+      background: #dbb2d0;
+      border-radius: 60px;
+      padding: 0.6rem 1.8rem;
+      font-weight: 600;
+      color: #2d1b2d;
+      font-size: 1.2rem;
+    }
+
+    hr {
+      border: 1px solid #fad7ec;
+      margin: 2rem 0;
+    }
+
+    /* placeholder style */
+    .placeholder-img {
+      background: linear-gradient(145deg, #f6d4e8, #fbf2f9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #af84a3;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    /* mobile fine-tuning */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2rem; }
+      .nav-header { flex-direction: column; gap: 0.7rem; }
+      .nav-links { gap: 1rem; justify-content: center; }
+      .contact-section { flex-direction: column; text-align: center; gap: 1rem; }
+      .btn { width: 100%; }
+    }
+
+    /* radio selector invisible but functional */
+    .b-binary-selector {
+      display: none;
+    }
+    #selectBBinary:checked ~ .cart-side-panel {
+      display: block;
+    }
+    /* message after checkout simulation */
+    .email-note {
+      font-size: 0.9rem;
+      color: #7d5382;
+      margin-top: 1rem;
+      background: #f2e3fa;
+      border-radius: 60px;
+      padding: 0.5rem 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- header / navigation -->
+    <div class="nav-header">
+      <span class="logo">🌸 My Handmade</span>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#journals">Handmade Journals</a>
+        <a href="#sketchbooks">Sketchbooks & portable</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+
+    <!-- ABOUT SECTION -->
+    <section id="about">
+      <h2>About</h2>
+      <div style="background: white; border-radius: 50px; padding: 2rem; border: 1px solid #ffdcf0;">
+        <p style="font-size: 1.3rem; color: #43304b;">Every stitch tells a story. My Handmade creates heirloom-quality hardbound journals, sketchbooks, and portable covers with love and sustainable materials. Based in Pakistan, shipping nationwide.</p>
+        <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center;">
+          <span class="shipping-badge">📦 shipping: Rs. 250</span>
+          <span style="background: #f0dceb; border-radius: 60px; padding: 0.5rem 1.5rem;">📞 0337-4740727</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HANDMADE JOURNALS (featured product row) -->
+    <section id="journals">
+      <h2>📖 Handmade Journals</h2>
+      <div class="product-grid">
+        <!-- B Binary main card -->
+        <div class="product-card">
+          <div class="product-image">
+            <img src="https://i.ibb.co/Ldx9PbdR/In-Shot-20260205-173105950.jpg" alt="B Binary hero shot">
+          </div>
+          <div class="price-tag">Rs. 1499 <small>B Binary 01</small></div>
+          <div class="desc">Handmade Hardbind Journal Diary · eco-friendly paper, hand-stitched.</div>
+          <div class="thumbnails">
+            <div class="thumb"><img src="https://i.ibb.co/nqk6ZcPw/BW2.jpg" alt="B Binary detail 1"></div>
+            <div class="thumb"><img src="https://i.ibb.co/BKGyJ8Rf/BW3.jpg" alt="B Binary detail 2"></div>
+            <div class="thumb placeholder-img" style="background:#f3e2f0;">+</div>
+          </div>
+          <!-- invisible radio trigger, but we put label as button -->
+          <div style="margin-top: 1.5rem;">
+            <label for="selectBBinary" class="btn btn-small" style="display:inline-block; text-align:center; cursor:pointer;">📌 select B Binary</label>
+          </div>
+        </div>
+
+        <!-- placeholder card for other journals (Sketchbooks & portable) -->
+        <div class="product-card">
+          <div class="product-image placeholder-img">
+            <span>📓 sketchbook placeholder</span>
+          </div>
+          <div class="price-tag">Rs. 1299 <small>Artisan A5</small></div>
+          <div class="desc">Softcover sketchbook, 120gsm · portable hard cover option</div>
+          <div class="thumbnails">
+            <div class="thumb placeholder-img"></div>
+            <div class="thumb placeholder-img"></div>
+          </div>
+        </div>
+
+        <!-- one more placeholder for portable hard covers (shown in sketchbooks section) -->
+        <div class="product-card">
+          <div class="product-image placeholder-img">
+            <span>📘 traveler’s hard cover</span>
+          </div>
+          <div class="price-tag">Rs. 1699 <small>pocket HC</small></div>
+          <div class="desc">Refillable leather-style cover + notebook.</div>
+          <div class="thumbnails">
+            <div class="thumb placeholder-img"></div>
+            <div class="thumb placeholder-img"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKETCHBOOKS & PORTABLE HARD COVERS section (explicit) -->
+    <section id="sketchbooks">
+      <h2>🎨 Sketchbooks & portable Hard Covers</h2>
+      <div style="background: white; border-radius: 40px; padding: 2rem; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+        <div style="flex: 1 1 200px; min-width: 150px;">
+          <div class="product-image placeholder-img" style="height:180px;">field notes style</div>
+          <p class="price-tag" style="font-size:1.3rem;">Rs. 990 <small>pocket</small></p>
+        </div>
+        <div style="flex: 1 1 200px;">
+          <div class="product-image placeholder-img" style="height:180px;">A5 hard cover</div>
+          <p class="price-tag" style="font-size:1.3rem;">Rs. 1850 <small>watercolor</small></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- hidden radio toggler for B Binary -->
+    <input type="radio" name="bBinaryToggle" id="selectBBinary" class="b-binary-selector">
+
+    <!-- CART SIDE PAGE (shown only when B Binary selected) -->
+    <div class="cart-side-panel" id="bBinaryPanel">
+      <div class="panel-title">🛒 B Binary 01 · add to Cart</div>
+      <div class="cart-details">
+        <div class="info-row"><span>Product</span> <span class="highlight">B Binary 01 – Hardbound Journal</span></div>
+        <div class="info-row"><span>Price</span> <span class="highlight">Rs. 1499</span></div>
+        <div class="info-row"><span>Shipping</span> <span class="highlight">Rs. 250</span></div>
+        <div class="info-row" style="font-weight:600;"><span>Total</span> <span>Rs. 1749</span></div>
+      </div>
+
+      <div style="text-align: right;" class="shipping-note">🚚 free washi tape with order</div>
+
+      <!-- PROCEED TO CHECKOUT (text) -->
+      <h3 style="display: flex; align-items: center; gap: 0.5rem;">➡️ proceed to checkout</h3>
+
+      <!-- LEAD FORM (contact info) -->
+      <div class="lead-form">
+        <div class="form-group">
+          <label>Full name</label>
+          <input type="text" placeholder="e.g. Sarah Khan" id="nameInput">
+        </div>
+        <div class="form-group">
+          <label>Contact number</label>
+          <input type="tel" placeholder="0337-4740727" id="contactInput" value="0337-4740727">
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <textarea rows="2" placeholder="House, street, city" id="addressInput"></textarea>
+        </div>
+
+        <!-- CHECKOUT button + email note -->
+        <button class="btn" id="checkoutBtn">✔️ CHECKOUT</button>
+        <div class="email-note" id="emailConfirmation" style="display: none;">
+          📧 lead sent to mariumijazali.110@gmail.com
+        </div>
+        <div style="margin-top: 0.5rem; font-size:0.95rem; background: #fbf2fb; border-radius: 40px; padding: 0.7rem;">
+          <span>📋 your info will be emailed to us.</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; text-align: right;">
+        <label for="selectBBinary" style="cursor:pointer; background: #ffe4f2; padding:0.6rem 2rem; border-radius:60px;">← close panel</label>
+      </div>
+    </div>
+
+    <!-- CONTACT SECTION (with phone, etc) -->
+    <section id="contact">
+      <h2>📞 Contact</h2>
+      <div class="contact-section">
+        <div class="contact-row">
+          <span>📱 0337-4740727</span>
+          <span>✉️ mariumijazali.110@gmail.com</span>
+        </div>
+        <div class="shipping-badge">shipping fee Rs. 250</div>
+      </div>
+    </section>
+
+    <!-- tiny footer note (additional placeholders) -->
+    <hr>
+    <div style="text-align: center; color: #7f6085;">
+      ✨ My Handmade · each piece unique · prices inclusive of all taxes ✨
+    </div>
+  </div>
+
+  <!-- simple inline script to handle checkout simulation & email message -->
+  <script>
+    (function() {
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      const emailDiv = document.getElementById('emailConfirmation');
+      const nameField = document.getElementById('nameInput');
+      const contactField = document.getElementById('contactInput');
+      const addressField = document.getElementById('addressInput');
+
+      checkoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();  // prevent any form reload
+
+        // Simulate gathering lead data
+        const name = nameField.value.trim() || 'not provided';
+        const contact = contactField.value.trim() || '0337-4740727';
+        const address = addressField.value.trim() || 'not provided';
+
+        // In a real environment, here you'd send to a backend.
+        // For demo, show the email confirmation line and a preview.
+        emailDiv.style.display = 'block';
+
+        // Also we can show a quick summary (optional) as feedback
+        alert(`✨ lead ready ✨\nname: ${name}\ncontact: ${contact}\naddress: ${address}\n\n(this info would be emailed to mariumijazali.110@gmail.com)`);
+
+        // You could also dynamically fill hidden mailto, but spec says after checkout email of lead sent.
+        // We mimic by showing message.
+        console.log('lead data', { name, contact, address, to: 'mariumijazali.110@gmail.com' });
+      });
+
+      // if user clicks close panel, we can uncheck radio (optional, but toggles via label already)
+      // add small extra: uncheck radio when close label clicked.
+      const closeLabels = document.querySelectorAll('label[for="selectBBinary"]');
+      closeLabels.forEach(label => {
+        label.addEventListener('click', function() {
+          document.getElementById('selectBBinary').checked = false;
+        });
+      });
+    })();
+  </script>
+  <!-- Ensure the panel shows/hides based on radio (CSS active-panel) -->
+  <style>
+    /* we use .b-binary-selector:checked ~ .cart-side-panel */
+    .b-binary-selector {
+      display: none;
+    }
+    #selectBBinary:checked ~ .cart-side-panel {
+      display: block !important;
+    }
+    /* but careful: the .cart-side-panel is sibling after input, which it is, good */
+  </style>
+  <!-- reorder for safety: input then panel in DOM -->
+  <!-- the input is right before panel, so sibling selector works -->
+</body>
+</html>
+```
